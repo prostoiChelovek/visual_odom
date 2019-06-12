@@ -6,7 +6,7 @@
 
 
 #include <iostream>
-#include <ctype.h>
+#include <cctype>
 #include <algorithm>
 #include <iterator>
 #include <vector>
@@ -20,23 +20,23 @@
 #include <opencv2/core/eigen.hpp>
 #include "feature.h"
 
-class Bucket
-{
+class Bucket {
 
 public:
-    int id;
     int max_size;
 
     FeatureSet features;
 
-    Bucket(int);
+    explicit Bucket(int);
+
     ~Bucket();
 
     void add_feature(cv::Point2f, int);
-    void get_features(FeatureSet&);
+
+    void get_features(FeatureSet &);
 
     int size();
-    
+
 };
 
 #endif

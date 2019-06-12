@@ -8,7 +8,7 @@
 #include "opencv2/calib3d/calib3d.hpp"
 
 #include <iostream>
-#include <ctype.h>
+#include <cctype>
 #include <algorithm>
 #include <iterator>
 #include <vector>
@@ -19,23 +19,17 @@
 
 
 #include "feature.h"
-#include "matrix.h"
 
 
-// --------------------------------
-// Visualization
-// --------------------------------
-void drawFeaturePoints(cv::Mat image, std::vector<cv::Point2f>& points);
-
-void display(int frame_id, cv::Mat& trajectory, cv::Mat& pose, std::vector<Matrix>& pose_matrix_gt, float fps, bool showgt);
+void display(cv::Mat &trajectory, const cv::Point2f &pose);
 
 
 
 // --------------------------------
 // Transformation
 // --------------------------------
-void integrateOdometryStereo(int frame_id, cv::Mat& rigid_body_transformation, cv::Mat& frame_pose, const cv::Mat& rotation, 
-                            const cv::Mat& translation_stereo);
+void integrateOdometryStereo(cv::Mat &rigid_body_transformation, cv::Mat &frame_pose, const cv::Mat &rotation,
+                             const cv::Mat &translation_stereo);
 
 bool isRotationMatrix(cv::Mat &R);
 
@@ -49,7 +43,6 @@ void loadImageLeft(cv::Mat& image_color, cv::Mat& image_gary, int frame_id, std:
 
 void loadImageRight(cv::Mat& image_color, cv::Mat& image_gary, int frame_id, std::string filepath);
 
-void loadGyro(std::string filename, std::vector<std::vector<double>>& time_gyros);
 // read time gyro txt file with format of timestamp, gx, gy, gz
 
 #endif
