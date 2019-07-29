@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-#include "../Wrapper.hpp"
+#include "Wrapper.hpp"
 
 using namespace std;
 
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
     // -----------------------------------------
     clock_t tic = clock();
 
-    Wrapper wp(fx, fy, cx, cy, bf, projMatrl, projMatrr);
+    Wrapper wp(projMatrl, projMatrr);
 
     for (int frame_id = init_frame_id + 1; frame_id < 9000; frame_id++) {
         // ------------
@@ -61,6 +61,7 @@ int main(int argc, char **argv) {
 
         std::cout << "FPS: " << fps << std::endl;
 
+        displayTracking(imageLeft, wp.pointsLeft_t0, wp.pointsLeft_t1);
         display(trajectory, pos);
     }
     return EXIT_SUCCESS;

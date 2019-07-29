@@ -15,21 +15,19 @@
 #include <iterator>
 #include <vector>
 
-#include "src/feature.h"
-#include "src/utils.h"
-#include "src/visualOdometry.h"
+#include "feature.h"
+#include "utils.h"
+#include "visualOdometry.h"
 
 using namespace cv;
 using namespace std;
 
 class Wrapper {
 public:
-    float fx, fy, cx, cy, bf;
     Mat projMatrl, projMatrr;
     Mat rotation = Mat::eye(3, 3, CV_64F);
     Mat translation_stereo = Mat::zeros(3, 1, CV_64F);
 
-    Mat pose = Mat::zeros(3, 1, CV_64F);
     Mat Rpose = Mat::eye(3, 3, CV_64F);
 
     Mat frame_pose = Mat::eye(4, 4, CV_64F);
@@ -38,8 +36,10 @@ public:
     FeatureSet currentVOFeatures;
     Mat points4D, points3D;
 
-    Wrapper(float fx, float fy, float cx, float cy, float bf, Mat &projMatrl, Mat &projMatrr) :
-            fx(fx), fy(fy), cx(cx), cy(cy), bf(bf), projMatrl(projMatrl), projMatrr(projMatrr) {
+    vector<Point2f> pointsLeft_t0, pointsRight_t0, pointsLeft_t1, pointsRight_t1;
+
+    Wrapper(Mat &projMatrl, Mat &projMatrr)
+            : projMatrl(projMatrl), projMatrr(projMatrr) {
 
     }
 
@@ -47,11 +47,10 @@ public:
         if (imageLeft_t0.cols == 0) {
             imageLeft_t0 = imageLeft;
             imageRight_t0 = imageRight;
-            return Point(-1, -1);
+            return {-1, -1};
         }
 
         vector<Point2f> oldPointsLeft_t0 = currentVOFeatures.points;
-        vector<Point2f> pointsLeft_t0, pointsRight_t0, pointsLeft_t1, pointsRight_t1;
         matchingFeatures(imageLeft_t0, imageRight_t0,
                          imageLeft, imageRight,
                          currentVOFeatures,
@@ -84,7 +83,6 @@ public:
         // -----------------------
         trackingFrame2Frame(projMatrl, projMatrr, pointsLeft_t0, pointsLeft_t1, points3D_t0, rotation,
                             translation_stereo);
-        displayTracking(imageLeft, pointsLeft_t0, pointsLeft_t1);
 
 
         points4D = points4D_t0;
@@ -116,9 +114,8 @@ public:
     }
 
 private:
-    vector<FeaturePoint> oldFeaturePointsLeft;
-    vector<FeaturePoint> currentFeaturePointsLeft;
     Mat imageLeft_t0, imageRight_t0;
+
 };
 
 

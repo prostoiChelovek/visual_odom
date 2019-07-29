@@ -1,23 +1,6 @@
 #include "feature.h"
 #include "bucket.h"
 
-void deleteUnmatchFeatures(std::vector<cv::Point2f> &points0, std::vector<cv::Point2f> &points1,
-                           std::vector<uchar> &status) {
-    //getting rid of points for which the KLT tracking failed or those who have gone outside the frame
-    int indexCorrection = 0;
-    for (int i = 0; i < status.size(); i++) {
-        cv::Point2f pt = points1.at(i - indexCorrection);
-        if ((status.at(i) == 0) || (pt.x < 0) || (pt.y < 0)) {
-            if ((pt.x < 0) || (pt.y < 0)) {
-                status.at(i) = 0;
-            }
-            points0.erase(points0.begin() + (i - indexCorrection));
-            points1.erase(points1.begin() + (i - indexCorrection));
-            indexCorrection++;
-        }
-    }
-}
-
 void featureDetectionFast(cv::Mat image, std::vector<cv::Point2f> &points) {
 //uses FAST as for feature dection, modify parameters as necessary
     std::vector<cv::KeyPoint> keypoints;

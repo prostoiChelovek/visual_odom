@@ -17,13 +17,6 @@
 #include <fstream>
 #include <string>
 
-
-struct FeaturePoint {
-    cv::Point2f point;
-    int id;
-    int age;
-};
-
 struct FeatureSet {
     std::vector<cv::Point2f> points;
     std::vector<int> ages;
@@ -38,9 +31,6 @@ struct FeatureSet {
     }
 };
 
-
-void
-deleteUnmatchFeatures(std::vector<cv::Point2f> &points0, std::vector<cv::Point2f> &points1, std::vector<uchar> &status);
 
 void featureDetectionFast(cv::Mat image, std::vector<cv::Point2f> &points);
 
